@@ -7,10 +7,7 @@ from pokemon import PokemonApiResponse
 
 pokemon_app = FastAPI()
 
-origins = [
-    "http://localhost",
-    "http://localhost:8080",
-]
+origins = ["*"]
 
 pokemon_app.add_middleware(
     CORSMiddleware,
