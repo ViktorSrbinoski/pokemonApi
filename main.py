@@ -1,12 +1,11 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
 import pokeapi_client
 from pokemon import PokemonApiResponse
 
 pokemon_app = FastAPI()
-all_pokemon = dict()
-all_moves = dict()
 
 origins = [
     "http://localhost",
@@ -24,27 +23,18 @@ pokemon_app.add_middleware(
 
 @pokemon_app.get("/pokemon")
 def get_all_pokemon():
-    global all_pokemon
-    all_pokemon = pokeapi_client.get_pokemon_list()
-    result = []
-    for name in all_pokemon:
-        result.append(pokeapi_client.Overview(name, all_pokemon[name]))
+    result = pokeapi_client.get_pokemon_list()
     return PokemonApiResponse(result)
 
 
 @pokemon_app.get("/pokemon/{name}")
 def get_specific_pokemon(name):
-    global all_pokemon
     return pokeapi_client.get_pokemon_info(name)
 
 
 @pokemon_app.get("/moves")
 def get_request():
-    global all_moves
-    all_moves = pokeapi_client.get_all_damaging_moves()
-    result = []
-    for move in all_moves:
-        result.append(pokeapi_client.Overview(move, all_moves[move]))
+    result = pokeapi_client.get_all_damaging_moves()
     return PokemonApiResponse(result)
 
 
@@ -55,8 +45,8 @@ def get_move_info(move):
 
 @pokemon_app.get("/damage/{defender}/{attacker}/{move}")
 def pokemon_battle(defender, attacker, move):
-    defender = pokeapi_client.get_pokemon_info(all_pokemon[defender])
-    attacker = pokeapi_client.get_pokemon_info(all_pokemon[attacker])
+    defender = pokeapi_client.get_pokemon_info(defender)
+    attacker = pokeapi_client.get_pokemon_info(attacker)
     full_move = pokeapi_client.get_move_info(move)
     return defender.calculate_damage_taken(attacker, full_move)
 

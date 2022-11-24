@@ -6,11 +6,11 @@ from pokemon import Move
 
 
 def get_pokemon_list():
-    pokemon_dict = {}
+    all_pokemon = []
     response = requests.get("https://pokeapi.co/api/v2/pokemon?offset=0&limit=2000")
     for result in response.json()["results"]:
-        pokemon_dict[result["name"]] = result["url"]
-    return pokemon_dict
+        all_pokemon.append(Overview(result["name"], result["url"]))
+    return all_pokemon
 
 
 def get_pokemon_info(name):
@@ -28,11 +28,11 @@ def get_pokemon_info(name):
 
 def get_all_damaging_moves():
     damage_categories = ["0", "4", "6", "7"]
-    all_moves = {}
+    all_moves = []
     for category in damage_categories:
         response = requests.get("https://pokeapi.co/api/v2/move-category/" + category).json()
         for move in response["moves"]:
-            all_moves[move["name"]] = move["url"]
+            all_moves.append(Overview(move["name"], move["url"]))
     return all_moves
 
 
