@@ -35,7 +35,7 @@ def get_all_pokemon():
 @pokemon_app.get("/pokemon/{name}")
 def get_specific_pokemon(name):
     global all_pokemon
-    return pokeapi_client.get_pokemon_info(all_pokemon[name])
+    return pokeapi_client.get_pokemon_info(name)
 
 
 @pokemon_app.get("/moves")

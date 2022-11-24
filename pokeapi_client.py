@@ -13,8 +13,8 @@ def get_pokemon_list():
     return pokemon_dict
 
 
-def get_pokemon_info(url):
-    response = requests.get(url).json()
+def get_pokemon_info(name):
+    response = requests.get("https://pokeapi.co/api/v2/pokemon/"+name).json()
     base_stats = BaseStats(response["stats"][0]["base_stat"], response["stats"][1]["base_stat"],
                            response["stats"][2]["base_stat"], response["stats"][3]["base_stat"],
                            response["stats"][4]["base_stat"], response["stats"][5]["base_stat"])
